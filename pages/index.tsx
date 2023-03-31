@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
-import { getSingleProduct } from "./apicall/getSingleProduct";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +18,7 @@ export default function Home() {
 
       <main className="w-screen h-full">
         <div className="container  mx-auto flex flex-col">
-          <Link href={"/home"}>All writers List</Link>
+          <Link href={"/author"}>All writers List</Link>
           <Link href={"/product/viewProductsLayout"}>Products</Link>
           {/* <ViewProuducts data={[]} /> */}
         </div>

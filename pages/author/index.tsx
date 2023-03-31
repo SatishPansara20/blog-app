@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { InferGetStaticPropsType } from "next";
 import { GetStaticProps } from "next";
 import { User } from "@/types";
+import GetAllAuthor from "../../lib/getAllAuthor";
 
 export const getStaticProps: GetStaticProps<{
   data: User[];
 }> = async () => {
-  const res = await fetch(`http://localhost:3001/users`);
-  const data: User[] = await res.json();
+  const data = await GetAllAuthor();
 
   return {
     props: {
@@ -26,7 +26,7 @@ function Page({ data }: InferGetStaticPropsType<typeof getStaticProps>) {
         {data?.map((author, i) => {
           return (
             <div key={author.id}>
-              <Link href={`/home/${author.id}`}>{author.name}</Link>
+              <Link href={`/author/${author?.id}`}>{author?.name}</Link>
 
               <br />
             </div>

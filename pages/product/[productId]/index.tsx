@@ -1,27 +1,51 @@
 import React, { useState } from "react";
 
-import ProductImage from "@/resources/images/product_img.png";
+// import ProductImage from "@/resources/images/product_img.png";
 import Image from "next/image";
-import { getSingleProduct } from "@/pages/apicall/getSingleProduct";
+import GetSingleProduct from "@/lib/getSingleProduct";
 import { Product } from "@/types";
-import { getAllProducts } from "@/pages/apicall/getallproduct";
+import GetAllProducts from "@/lib/getAllProducts";
+import { useRouter } from "next/router";
+import { Spin } from "antd";
+import { ParsedUrlQuery } from "querystring";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
-const productInfo = {
-  id: "1",
-  productName: "Product",
-  productPrice: 125,
-  productQuantity: 5,
-  productImage: "",
-  productStatus: "In Stock",
-  productDescription: "All About the Product",
+const ProductImage =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvhX8n4_M1SDc5noL6OJlDj_Oh7gNamCizJftJ7NFA&s";
+
+interface IParams extends ParsedUrlQuery {
+  productId: string;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await GetAllProducts();
+  const paths = data.map((item: Product) => ({
+    params: { productId: item.id.toString() },
+  }));
+
+  return { paths, fallback: true };
 };
 
-const ViewSignleProduct = () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { productId } = context.params as IParams;
+
+  const productInfo = await GetSingleProduct(productId);
+
+  return { props: { productInfo } };
+};
+
+const Page = ({
+  productInfo,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { isFallback, push } = useRouter();
+
   const [incrementAmount, setIncrementAmount] = useState(0);
 
   const handleDeleteProduct = async () => {};
 
-  const handleEdit = async () => {};
+  const handleEdit = async () => {
+    push("/product/edit");
+  };
 
   const handleQChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIncrementAmount(Number(e.target.value));
@@ -37,6 +61,10 @@ const ViewSignleProduct = () => {
 
   const handleSelectedProduct = () => {};
 
+  if (isFallback) {
+    return <Spin />;
+  }
+
   return (
     <div className="container mx-auto">
       <div className="m-4 flex max-h-full max-w-full justify-center ">
@@ -44,6 +72,8 @@ const ViewSignleProduct = () => {
           <Image
             // src={`${imageURL}${product.image}`}
             src={ProductImage}
+            width={200}
+            height={120}
             alt="product imaage"
             className="h-full w-full object-contain"
             priority
@@ -172,31 +202,14 @@ const ViewSignleProduct = () => {
   );
 };
 
-export default ViewSignleProduct;
+export default Page;
 
-export async function getStaticPaths({
-  viewSignleProduct,
-}: {
-  viewSignleProduct: string;
-}) {
-  console.log(viewSignleProduct);
-  const data: Product[] = await getAllProducts();
-
-  console.log(data);
-
-  const paths = data.map((post: Product) => ({
-    params: { viewSignleProduct: post.id.toString() },
-  }));
-
-  return { paths, fallback: true };
-}
-
-export async function getStaticProps({
-  params: { viewSignleProduct },
-}: {
-  params: { viewSignleProduct: string };
-}) {
-  const data = await getSingleProduct({ id: viewSignleProduct });
-
-  return { props: { data } };
-}
+// const productInfo = {
+//   id: "1",
+//   productName: "Product",
+//   productPrice: 125,
+//   productQuantity: 5,
+//   productImage: "",
+//   productStatus: "In Stock",
+//   productDescription: "All About the Product",
+// };

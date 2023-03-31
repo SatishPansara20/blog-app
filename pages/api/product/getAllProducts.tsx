@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { products } from "../data/index";
 
-export default function getAllProducts(
+export default function GetAllProducts(
   _req: NextApiRequest,
   res: NextApiResponse<Product[]>
 ) {

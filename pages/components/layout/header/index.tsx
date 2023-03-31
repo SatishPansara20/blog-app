@@ -9,11 +9,11 @@ type Props = {};
 
 type imgProps = { src: number; width: number; quality: number };
 
-const myLoader = ({ src, width, quality }: imgProps) => {
-  return `https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/c4/0c/49/c40c49f7-11b7-e747-9414-7416a6631754/AppIcon-0-0-1x_U007emarketing-0-0-0-6-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png/${src}?w=${width}&q=${
-    quality || 75
-  }`;
-};
+// const myLoader = ({ src, width, quality }: imgProps) => {
+//   return `https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/c4/0c/49/c40c49f7-11b7-e747-9414-7416a6631754/AppIcon-0-0-1x_U007emarketing-0-0-0-6-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png/${src}?w=${width}&q=${
+//     quality || 75
+//   }`;
+// };
 
 export default function Navigation({}: Props) {
   return (
@@ -49,26 +49,18 @@ export default function Navigation({}: Props) {
               <li>
                 <Link
                   className="text-[16px]  hover:text-red-300 hover:ease-out hover:font-semibold"
-                  href={`/`}
+                  href={`/product/viewProductsLayout`}
                 >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-[16px]  hover:text-red-300 hover:ease-out hover:font-semibold"
-                  href={`/`}
-                >
-                  Contact Us
+                  Product
                 </Link>
               </li>
 
               <li>
                 <Link
                   className="text-[16px]  hover:text-red-300 hover:ease-out hover:font-semibold"
-                  href={`/`}
+                  href={`/author`}
                 >
-                  Cart
+                  Author
                 </Link>
               </li>
             </ul>

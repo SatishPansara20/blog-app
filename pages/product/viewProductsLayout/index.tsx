@@ -3,30 +3,22 @@ import { InferGetStaticPropsType } from "next";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 
-import ProductImage from "@/resources/images/product_img.png";
+// import ProductImage from "@/resources/images/product_img.png";
 import Link from "next/link";
 import { Product } from "../../../types";
-import { getAllProducts } from "@/pages/apicall/getallproduct";
+import getAllProducts from "@/lib/getAllProducts";
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const data = await getAllProducts();
   return { props: { data } };
-}
-
-type myLoader = {
-  src: string;
-  width: number;
-  quality: number;
 };
 
-const myLoader = ({ src, width, quality }: myLoader) => {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
-};
+const ProductImage =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvhX8n4_M1SDc5noL6OJlDj_Oh7gNamCizJftJ7NFA&s";
 
 const ViewProuducts = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log(data);
   return (
     <>
       <div className="container mx-auto">
@@ -37,8 +29,8 @@ const ViewProuducts = ({
             </h2>
 
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              {data?.map((product) => (
-                <div key={product.id} className="relative">
+              {data?.map((product: Product) => (
+                <div key={product?.id} className="relative">
                   {/* Product Image */}
                   <div className=" aspect-w-1 aspect-h-1  overflow-hidden rounded-md bg-gray-200 hover:opacity-75 lg:aspect-none">
                     <p>
@@ -46,6 +38,8 @@ const ViewProuducts = ({
                         <Image
                           // src={`${imageURL}${product.image}`}
                           src={ProductImage}
+                          width={200}
+                          height={120}
                           alt="product imaage"
                           className="h-full w-full object-contain"
                           unoptimized
@@ -63,10 +57,10 @@ const ViewProuducts = ({
                     <div className="flex flex-col flex-wrap">
                       <h3 className="relative text-sm text-gray-700">
                         <span aria-hidden="true" className="absolute inset-0" />
-                        {product.productName}
+                        {product?.productName}
                       </h3>
                       <p className=" flex-wrap mt-1 text-sm text-gray-500">
-                        In Stock: {product.productQuantity}
+                        In Stock: {product?.productQuantity}
                       </p>
                     </div>
 
